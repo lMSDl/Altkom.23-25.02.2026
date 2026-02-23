@@ -41,3 +41,8 @@ Console.WriteLine(bundle.FullInfo);
 
 //bundle.Price = bundle.Price + 100;
 bundle.Price = bundle + 100;
+
+Console.WriteLine(bundle[1]);
+bundle[1] = "ala ma kota";
+Console.WriteLine(bundle[1]);
+Console.WriteLine(bundle["NaMe"]);

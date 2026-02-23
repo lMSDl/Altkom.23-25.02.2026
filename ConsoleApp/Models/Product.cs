@@ -130,5 +130,74 @@ namespace ConsoleApp.Models
         {
             return p.Price + price;
         }
+
+        //indexer - pozwala na dostęp do obiektu danej klasy jak do tablicy lub słownika
+        //możemy zdefiniowac sam getter lub też sam setter lub oba jednocześnie
+        public string this[int index]
+        {
+            get
+            {
+                switch (index)
+                {
+                    case 0:
+                        return Id.ToString();
+                    case 1:
+                        return Name;
+                    case 2:
+                        return Description;
+                    case 3:
+                        return FullInfo;
+                    case 4:
+                        return _expirationDate.ToString();
+                    case 5:
+                        return _productionDate.ToString();
+                    default:
+                        return string.Empty;
+                }
+            }
+            set
+            {
+                switch (index)
+                {
+                    case 0:
+                        Id = int.Parse(value);
+                        break;
+                    case 1:
+                        Name = value;
+                        break;
+                    case 2:
+                        Description = value;
+                        break;
+                    case 3:
+                        //FullInfo = value; - nie można przypisać wartości do read-only property
+                        break;
+                    case 4:
+                        ExpirationDate = DateTime.Parse(value);
+                        break;
+                    case 5:
+                        SetProductionDate(DateTime.Parse(value));
+                        break;
+                }
+            }
+
+        }
+
+        //indexem może być dowolny typ
+        public string this[string index]
+        {
+            get
+            {
+                return index.ToLower() switch
+                {
+                    "id" => Id.ToString(),
+                    "name" => Name,
+                    "description" => Description,
+                    "fullinfo" => FullInfo,
+                    "expirationdate" => _expirationDate.ToString(),
+                    "productiondate" => _productionDate.ToString(),
+                    _ => string.Empty
+                };
+            }
+        }
     }
 }
