@@ -46,3 +46,13 @@ Console.WriteLine(bundle[1]);
 bundle[1] = "ala ma kota";
 Console.WriteLine(bundle[1]);
 Console.WriteLine(bundle["NaMe"]);
+
+//utworzenie obiektu klasy pizza z wykorzystaniem inicjalizatora obiektów
+//pozwala na przypisanie wartości do właściwości obiektu w momencie jego tworzenia, co poprawia czytelność kodu i ułatwia jego pisanie.
+//Inicjalizator obiektów jest szczególnie przydatny, gdy chcemy ustawić wiele właściwości obiektu w jednym miejscu, zamiast przypisywać wartości do nich osobno po utworzeniu obiektu. Składnia inicjalizatora obiektów polega na umieszczeniu listy właściwości i ich wartości wewnątrz nawiasów klamrowych {} po utworzeniu obiektu.
+Pizza pizza = new Pizza() { HasHam = true, HasCheese = true, HasOlives = true };
+
+Pizza pizza2 = new Pizza(hasPepperoni: true, hasCheese: true ) { HasMushrooms = true, HasCheese = false};
+
+
+Console.WriteLine();
