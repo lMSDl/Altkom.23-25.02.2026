@@ -2,8 +2,11 @@
 
 namespace ConsoleApp
 {
-    internal class Introduction
+    //klasa statyczna - klasa, która nie może zostać zainicjalizowana, czyli nie można tworzyć obiektów tej klasy. Wszystkie członkowie klasy statycznej muszą być również statyczni. Klasy statyczne są często używane do grupowania metod pomocniczych lub funkcji, które nie wymagają stanu (danych instancji) i mogą być wywoływane bez konieczności tworzenia obiektu. Aby zdefiniować klasę statyczną, należy użyć słowa kluczowego static przed deklaracją klasy (np. public static class ClassName).
+    //może zawierać tylko statyczych członków (metody, pola, właściwości itp.)
+    internal static class Introduction
     {
+        //metoda statyczna - metoda, która może być wywołana bez tworzania instancji klasy. Metody statyczne są związane z klasą, a nie z konkretnym obiektem, co oznacza, że można je wywołać bez konieczności tworzenia obiektu tej klasy. Metody statyczne są często używane do definiowania funkcji pomocniczych lub operacji, które nie wymagają dostępu do danych instancji klasy. Aby wywołać metodę statyczną, należy użyć nazwy klasy, a następnie operatora kropki i nazwy metody (np. ClassName.MethodName()).
         public static void Run()
         {
 
