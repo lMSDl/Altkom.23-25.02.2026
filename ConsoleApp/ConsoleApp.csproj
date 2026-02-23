@@ -8,8 +8,8 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<using Remove="System"/>
-		<using Include="System.Text.Json"/>
+		<using Remove="System" />
+		<using Include="System.Text.Json" />
 	</ItemGroup>
 
 </Project>
