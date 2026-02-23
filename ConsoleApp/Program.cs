@@ -20,3 +20,7 @@ Console.WriteLine(product.FullInfo2);
 
 product.Description = "naprawiony";
 Console.WriteLine(product.FullInfo2);
+
+product = new Product("Czajnik", DateTime.Now.AddYears(5));
+Console.WriteLine(product.FullInfo);
+
