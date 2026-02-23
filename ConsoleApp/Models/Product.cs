@@ -65,6 +65,7 @@ namespace ConsoleApp.Models
 
         //jest możliwoć zmiany modyfikatora dla getter i setter
         public int Id { get; private set; }
+        public float Price { get; set; }
 
         //full-property
         private DateTime _expirationDate; //backfiled dla property
@@ -110,5 +111,24 @@ namespace ConsoleApp.Models
         }
 
         public string FullInfo2 => $"Id: {Id}, Name: \"{Name}\", {{Production Date: {_productionDate}, Expiration Date: {_expirationDate}}}, Description: {Description}";
+
+        //przeciążenie operatorów - możliwość zdefiniowania własnego zachowania operatorów dla naszej klasy. Dzięki temu możemy używać operatorów takich jak +, -, *, / itp. w kontekście naszych obiektów, co może poprawić czytelność kodu i ułatwić jego pisanie. Przeciążenie operatorów polega na zdefiniowaniu metody statycznej, która implementuje zachowanie danego operatora dla naszej klasy. Metoda ta musi mieć odpowiednią sygnaturę, która określa typy argumentów i typ zwracany.
+        //możemy przeciążać zarówno operatory binarne (np. +, -, *, /), które działają na dwóch operandach, jak i operatory unarne (np. ++, --), które działają na jednym operandzie. Przeciążenie operatorów pozwala na tworzenie bardziej naturalnych i intuicyjnych interakcji z naszymi obiektami, co może poprawić czytelność kodu i ułatwić jego pisanie.
+        //można także przeciążać operatory porównania (np. ==, !=, <, >), ale w takim przypadku należy pamiętać o zachowaniu spójności między operatorami porównania a metodami Equals i GetHashCode, aby uniknąć nieoczekiwanych zachowań podczas porównywania obiektów.
+        public static Product operator +(Product p1, Product p2)
+        {
+            Product bundle = new Product();
+            bundle.Name = $"{p1.Name} + {p2.Name}";
+            bundle.Price = (p1.Price + p2.Price) * 0.9f;
+            bundle.ExpirationDate = p1.ExpirationDate < p2.ExpirationDate ? p1.ExpirationDate : p2.ExpirationDate;
+            //warunek ? wartość jeśli prawda : wartość jeśli fałsz
+            return bundle;
+        }
+
+        //możemy mieszać typy operandów, ale przynajmniej jeden z nich musi być typu naszej klasy. W tym przypadku, operator + jest przeciążony dla kombinacji Product i float, co pozwala na dodanie ceny do produktu, co może być wygodne i czytelne, zwłaszcza gdy chcemy szybko obliczyć nową cenę produktu po dodaniu dodatkowych kosztów lub rabatów.
+        public static float operator +(Product p, float price)
+        {
+            return p.Price + price;
+        }
     }
 }

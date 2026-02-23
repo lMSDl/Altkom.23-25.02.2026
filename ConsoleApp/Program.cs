@@ -6,7 +6,7 @@ using ConsoleApp;
 using ConsoleApp.Models;
 using System.IO.Pipes;
 
-Introduction.Run();
+//Introduction.Run();
 
 Product product = new Product();
 
@@ -26,3 +26,18 @@ Console.WriteLine(product.FullInfo2);
 
 product = new Product("Czajnik", DateTime.Now.AddYears(5));
 Console.WriteLine(product.FullInfo);
+
+
+Product product1 = new Product("Camera", DateTime.Now.AddYears(2));
+product1.Price = 1000 + 3;
+Console.WriteLine(product1.FullInfo);
+
+Product product2 = new Product("Headphones", DateTime.Now.AddYears(1));
+product2.Price = 500;
+Console.WriteLine(product2.FullInfo);
+
+Product bundle = product1 + product2;
+Console.WriteLine(bundle.FullInfo);
+
+//bundle.Price = bundle.Price + 100;
+bundle.Price = bundle + 100;
