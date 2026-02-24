@@ -5,24 +5,21 @@ using System.Text;
 
 namespace ItemsManager
 {
-    internal class PeopleManager : EntityManager
+    internal class PeopleManager : EntityManager<Person>
     {
-        protected override Entity CreateEntity()
+        protected override Person CreateEntity()
         {
             return new Person();
         }
 
-        protected override void ExtraCreate(Entity entity)
+        protected override void ExtraCreate(Person entity)
         {
-            var person = (Person)entity;
-            person.BirthDate = ReadDate("Enter birth date (yyyy-MM-dd): ");
+            entity.BirthDate = ReadDate("Enter birth date (yyyy-MM-dd): ");
         }
 
-        protected override void ExtraEdit(Entity current, Entity edited)
+        protected override void ExtraEdit(Person current, Person edited)
         {
-            var currentPerson = (Person)current;
-            var editedPerson = (Person)edited;
-            editedPerson.BirthDate = ReadDate($"Enter birth date ({currentPerson.BirthDate:yyyy-MM-dd}): ", currentPerson.BirthDate);
+            edited.BirthDate = ReadDate($"Enter birth date ({current.BirthDate:yyyy-MM-dd}): ", current.BirthDate);
         }
     }
 }

@@ -3,7 +3,9 @@ using Services.Interfaces;
 
 namespace ItemsManager
 {
-    internal abstract class EntityManager
+    // <T> - parametr generyczny, który pozwala na tworzenie klas, metod i interfejsów, które mogą działać z różnymi typami danych. Dzięki temu możemy tworzyć bardziej elastyczne i wielokrotnego użytku komponenty, które mogą być używane z różnymi typami danych bez konieczności duplikowania kodu.
+    // where T : - ograniczenie generyczne, które określa, że typ T musi dziedziczyć po klasie Entity. Oznacza to, że możemy używać tylko tych typów danych, które są klasami dziedziczącymi po Entity, co pozwala na korzystanie z właściwości i metod zdefiniowanych w klasie Entity w naszej klasie EntityManager.
+    internal abstract class EntityManager<T> where T : Entity
     {
         IEntityService service = new Services.InMemory.EntityService();
 
@@ -51,7 +53,7 @@ namespace ItemsManager
         void Edit()
         {
             int id = ReadInt("Id: ");
-            var entity = service.Read(id);
+            T? entity = service.Read(id) as T;
             if (entity == null)
             {
                 Console.WriteLine("Id not found");
@@ -65,12 +67,13 @@ namespace ItemsManager
             service.Update(id, newEntity);
         }
 
-        protected abstract void ExtraEdit(Entity current, Entity edited);
+        protected abstract void ExtraEdit(T current, T edited);
 
 
         void Create()
         {
             var entity = CreateEntity();
+            //var entity = Activator.CreateInstance<T>();
             entity.Name = ReadString("Name: ");
             ExtraCreate(entity);
 
@@ -78,8 +81,8 @@ namespace ItemsManager
             service.Create(entity);
         }
 
-        protected abstract Entity CreateEntity();
-        protected abstract void ExtraCreate(Entity entity);
+        protected abstract T CreateEntity();
+        protected abstract void ExtraCreate(T entity);
 
 
         void Delete()

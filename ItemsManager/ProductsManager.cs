@@ -2,26 +2,23 @@
 
 namespace ItemsManager
 {
-    internal class ProductsManager : EntityManager
+    internal class ProductsManager : EntityManager<Product>
     {
-        protected override Entity CreateEntity()
+        protected override Product CreateEntity()
         {
             return new Product();
         }
 
-        protected override void ExtraCreate(Entity entity)
+        protected override void ExtraCreate(Product entity)
         {
-            var product = (Product)entity;
-            product.Price = ReadFloat("Price: ");
-            product.CreatedAt = ReadDate("Created at: ");
+            entity.Price = ReadFloat("Price: ");
+            entity.CreatedAt = ReadDate("Created at: ");
         }
 
-        protected override void ExtraEdit(Entity current, Entity edited)
+        protected override void ExtraEdit(Product current, Product edited)
         {
-            var currentProduct = (Product)current;
-            var editedProduct = (Product)edited;
-            editedProduct.Price = ReadFloat($"Price ({currentProduct.Price}): ", currentProduct.Price);
-            editedProduct.CreatedAt = ReadDate($"Created at ({currentProduct.CreatedAt}): ", currentProduct.CreatedAt);
+            edited.Price = ReadFloat($"Price ({current.Price}): ", current.Price);
+            edited.CreatedAt = ReadDate($"Created at ({current.CreatedAt}): ", current.CreatedAt);
         }
     }
 }

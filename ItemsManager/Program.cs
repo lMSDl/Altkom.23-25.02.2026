@@ -1,4 +1,5 @@
 ﻿using ItemsManager;
+using Models;
 using Services.Interfaces;
 
 
@@ -16,6 +17,6 @@ foreach (var playable in playables)
 }*/
 
 
-EntityManager manager = new PeopleManager();
+EntityManager<ToDo> manager = new ToDoManager();
 
 manager.Run();
