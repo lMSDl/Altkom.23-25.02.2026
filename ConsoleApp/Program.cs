@@ -56,3 +56,17 @@ Pizza pizza2 = new Pizza(hasPepperoni: true, hasCheese: true ) { HasMushrooms = 
 
 
 Console.WriteLine();
+
+double a = 0.1d;
+Console.WriteLine(a);
+double b = 0.2d;
+Console.WriteLine(b);
+double c = a + b;
+Console.WriteLine(c);
+
+Console.WriteLine(c == 0.3d);
+
+Console.WriteLine(float.MaxValue);
+Console.WriteLine(double.MaxValue);
+Console.WriteLine(decimal.MaxValue);
+Console.WriteLine(421521523532m/3m);

@@ -1,3 +1,7 @@
 <Solution>
   <Project Path="ConsoleApp/ConsoleApp.csproj" />
+  <Project Path="ItemsManager/ItemsManager.csproj" Id="cbdff4b1-d576-47c4-8a6b-c583169784d0" />
+  <Project Path="Models/Models.csproj" Id="8331dde4-b6aa-468d-8fb5-3807cd18fdda" />
+  <Project Path="Services.InMemory/Services.InMemory.csproj" Id="c39b050d-381f-4fd4-8c15-770f0d941c64" />
+  <Project Path="Services.Interfaces/Services.Interfaces.csproj" Id="59052c34-9821-4669-97eb-9ad9ea7f624e" />
 </Solution>
