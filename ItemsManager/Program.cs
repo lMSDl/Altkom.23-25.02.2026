@@ -1,4 +1,5 @@
 ﻿using Services.Interfaces;
+using System.Reflection.Emit;
 
 
 /*Song song1 = new Song() { Title = "Song1", Artist = "Artist1" };
@@ -26,15 +27,18 @@ while (!exit)
     Console.Clear();
     foreach (var product in service.ReadAll())
     {
-        Console.WriteLine($"{product.Id} - {product.Name} - {product.Price}");
+        Console.WriteLine($"{product.Id} - {product.Name} - {product.Price} - {product.CreatedAt}");
     }
 
-    Console.WriteLine("Commands: delete, exit");
+    Console.WriteLine("Commands: create, delete, exit");
 
     string input = Console.ReadLine()!;
 
     switch (input.ToLower())
     {
+        case "create":
+            Create();
+            break;
         case "delete":
             Delete();
             break;
@@ -49,6 +53,16 @@ while (!exit)
     Console.WriteLine("Press any button..");
     Console.ReadKey();
 }
+
+void Create()
+{
+    var entity = new Models.Product();
+    entity.Name = ReadString("Name: ");
+    entity.CreatedAt = ReadDate("Created at: ");
+
+    service.Create(entity);
+}
+
 void Delete()
 {
     string input;
@@ -71,4 +85,44 @@ void Delete()
 
     if (!service.Delete(id))
         Console.WriteLine("Id not found");
+}
+
+static DateTime ReadDate(string label)
+{
+    Console.Write(label);
+    var input = Console.ReadLine()!;
+    DateTime dateTime;
+    try
+    {
+        dateTime = DateTime.Parse(input);
+        if (dateTime > DateTime.Now)
+            throw new InvalidDataException("Date cannot be in the future");
+    }
+    //foltrowanie wyjątków - możemy obsługiwać różne wyjątki w różny sposób
+    //catch tylko z typem wyjątku - oznacza, że łapiemy wyjątki dziedziczące po wskazanym typie
+    catch (FormatException)
+    {
+        Console.WriteLine("Invalid date fomat");
+        dateTime = ReadDate(label);
+    }
+    //catch z intancją wyjątku - dostajemy dostęp do informacji o wyjątku
+    catch (InvalidDataException e)
+    {
+        Console.WriteLine(e.Message);
+        dateTime = ReadDate(label);
+    }
+    //kolejnosc bloków ma znaczenie - najpierw sprawdzamy szczególne wyjątki, a na koniec ogólne
+    catch /*(Exception e)*/
+    {
+        Console.WriteLine("Unknown error");
+        dateTime = ReadDate(label);
+    }
+
+    return dateTime;
+}
+
+static string ReadString(string label)
+{
+    Console.Write(label);
+    return Console.ReadLine()!;
 }
