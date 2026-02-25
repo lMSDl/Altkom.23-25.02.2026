@@ -21,3 +21,5 @@ eventsExample.OddNumberEvent -= Console.WriteLine;
 
 //przypisanie null do zdarzenia nie jest możliwe, ponieważ zdarzenia są specjalnym rodzajem delegatów, które mają dodatkowe zabezpieczenia, aby zapobiec bezpośredniemu przypisywaniu wartości null. Zamiast tego, aby usunąć wszystkie subskrybentów zdarzenia, można użyć operatora -= do odsubskrybowania wszystkich metod, które zostały przypisane do zdarzenia. W przypadku przypisania null do zdarzenia, kompilator zgłosi błąd, ponieważ nie jest to dozwolone.
 //eventsExample.OddNumberEvent = Console.WriteLine;
+
+new LinqExamples().Test();
