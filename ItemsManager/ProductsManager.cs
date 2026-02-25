@@ -4,6 +4,14 @@ namespace ItemsManager
 {
     internal class ProductsManager : EntityManager<Product>
     {
+        public ProductsManager() {
+        
+         service.Create(new Product() { Name = "mleko", Price = 10.5f, CreatedAt = new DateTime(2024, 1, 1) });
+            service.Create(new Product() { Name = "chleb", Price = 5.0f, CreatedAt = new DateTime(2024, 2, 1) });
+            service.Create(new Product() { Name = "jajka", Price = 12.0f, CreatedAt = new DateTime(2024, 3, 1) });
+            service.Create(new Product() { Name = "masło", Price = 15.0f, CreatedAt = new DateTime(2024, 4, 1) });
+
+        }
         protected override Product CreateEntity()
         {
             return new Product();

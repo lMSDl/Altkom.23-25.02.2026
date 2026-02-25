@@ -1,5 +1,9 @@
 ﻿using Models;
 using Services.Interfaces;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Xml.Serialization;
 
 namespace ItemsManager
 {
@@ -7,7 +11,7 @@ namespace ItemsManager
     // where T : - ograniczenie generyczne, które określa, że typ T musi dziedziczyć po klasie Entity. Oznacza to, że możemy używać tylko tych typów danych, które są klasami dziedziczącymi po Entity, co pozwala na korzystanie z właściwości i metod zdefiniowanych w klasie Entity w naszej klasie EntityManager.
     internal abstract class EntityManager<T> where T : Entity
     {
-        IEntityService service = new Services.InMemory.EntityService();
+        protected IEntityService service = new Services.InMemory.EntityService();
 
 
         public void Run()
@@ -19,7 +23,7 @@ namespace ItemsManager
                 Console.Clear();
                 Console.WriteLine( string.Join('\n', service.ReadAll().Select(x => x.ToString())) );
 
-                Console.WriteLine("Commands: create, edit, delete, exit");
+                Console.WriteLine("Commands: create, edit, delete, json, xml, exit");
 
                 string input = Console.ReadLine()!;
 
@@ -34,6 +38,12 @@ namespace ItemsManager
                     case "delete":
                         Delete();
                         break;
+                    case "json":
+                        ToJson();
+                        break;
+                    case "xml":
+                        ToXml();
+                        break;
                     case "exit":
                         exit = true;
                         break;
@@ -45,6 +55,37 @@ namespace ItemsManager
                 Console.WriteLine("Press any button..");
                 Console.ReadKey();
             }
+        }
+
+        private void ToXml()
+        {
+            var items = service.ReadAll().Cast<T>().ToList();
+
+            XmlSerializer serializer = new XmlSerializer(items.GetType());
+
+            MemoryStream memoryStream = new MemoryStream();
+            serializer.Serialize(memoryStream, items);
+
+            string xml = Encoding.UTF8.GetString(memoryStream.ToArray());
+            Console.WriteLine(xml);
+
+        }
+
+        private void ToJson()
+        {
+            var items = service.ReadAll().Cast<T>();
+
+            JsonSerializerOptions options = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseUpper,
+                IgnoreReadOnlyProperties = true,
+                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault,
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            };
+
+               string json = JsonSerializer.Serialize(items, options);
+            Console.WriteLine(json);
         }
 
         void Edit()

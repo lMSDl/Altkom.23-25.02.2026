@@ -1,6 +1,7 @@
 ﻿using ItemsManager;
 using Models;
 using Services.Interfaces;
+using System.Globalization;
 
 
 /*Song song1 = new Song() { Title = "Song1", Artist = "Artist1" };
@@ -16,13 +17,13 @@ foreach (var playable in playables)
     Player.PlayItem(playable);
 }*/
 
+EntityManager<Product> manager = new ProductsManager();
 
-//EntityManager<ToDo> manager = new ToDoManager();
-EntityManager<Pet> manager = new DelegateManager<Pet>(
+/*EntityManager<Pet> manager = new DelegateManager<Pet>(
     () => new Pet(),
     pet => pet.Age = EntityManager<Pet>.ReadInt("Age: "),
     (current, edited) => edited.Age = EntityManager<Pet>.ReadInt($"Age ({current.Age}): ", current.Age)
-    );
+    );*/
 
 
 
