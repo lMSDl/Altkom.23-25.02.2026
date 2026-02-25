@@ -1,5 +1,7 @@
-﻿using Models;
+﻿using ItemsManager.Encryption;
+using Models;
 using Services.Interfaces;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -91,8 +93,11 @@ namespace ItemsManager
             switch(Path.GetExtension(fileName))
             {
                 case ".json":
-                    var data = File.ReadAllText(fileName);
-                    items = JsonSerializer.Deserialize<List<T>>(data, _options);
+                    var bytes = File.ReadAllBytes(fileName);
+                    var decryptedData = new SymmetricEncryption().Decrypt(bytes, "alamakota");
+                    
+
+                    items = JsonSerializer.Deserialize<List<T>>(decryptedData, _options);
                     
                     break;
                 case ".xml":
@@ -121,8 +126,10 @@ namespace ItemsManager
             }
             //File - fasada, która udostępnia proste metody do operacji na plikach, takich jak tworzenie, odczytywanie, zapisywanie i usuwanie plików.
             //Umożliwia łatwe zarządzanie plikami bez konieczności bezpośredniego korzystania z klas strumieniowych.
-            File.WriteAllText(Path.Combine(_filePath, fileName), data);
+            //File.WriteAllText(Path.Combine(_filePath, fileName), data);
 
+            var encryptedData = new SymmetricEncryption().Encrypt(data, "alamakota");
+            File.WriteAllBytes(Path.Combine(_filePath, fileName), encryptedData);
         }
 
         private void SaveToFileUsingStream(string data, string fileName)
