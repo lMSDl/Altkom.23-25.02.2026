@@ -11,7 +11,7 @@ namespace ItemsManager
         private readonly Action<T> _extraCreate;
         private readonly Action<T, T> _extraEdit;
 
-        public DelegateManager(Func<T> createEntity, Action<T> extraCreate, Action<T, T> extraEdit)
+        public DelegateManager(Func<T> createEntity, Action<T> extraCreate, Action<T, T> extraEdit, string filePath) : base(filePath)
         {
             _createEntity = createEntity;
             _extraCreate = extraCreate;

@@ -4,7 +4,7 @@ namespace ItemsManager
 {
     internal class ProductsManager : EntityManager<Product>
     {
-        public ProductsManager() {
+        public ProductsManager(string filePath) : base(filePath) {
         
          service.Create(new Product() { Name = "mleko", Price = 10.5f, CreatedAt = new DateTime(2024, 1, 1) });
             service.Create(new Product() { Name = "chleb", Price = 5.0f, CreatedAt = new DateTime(2024, 2, 1) });

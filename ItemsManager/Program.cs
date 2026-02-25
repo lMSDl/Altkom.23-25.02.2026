@@ -17,7 +17,7 @@ foreach (var playable in playables)
     Player.PlayItem(playable);
 }*/
 
-EntityManager<Product> manager = new ProductsManager();
+EntityManager<Product> manager = new ProductsManager(@"C:\Users\Student\Desktop");
 
 /*EntityManager<Pet> manager = new DelegateManager<Pet>(
     () => new Pet(),

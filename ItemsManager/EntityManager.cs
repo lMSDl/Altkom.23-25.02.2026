@@ -12,7 +12,12 @@ namespace ItemsManager
     internal abstract class EntityManager<T> where T : Entity
     {
         protected IEntityService service = new Services.InMemory.EntityService();
+        private readonly string _filePath;
 
+        protected EntityManager(string filePath)
+        {
+            _filePath = filePath;
+        }
 
         public void Run()
         {
@@ -56,6 +61,32 @@ namespace ItemsManager
                 Console.ReadKey();
             }
         }
+        private void SaveToFile(string data, string fileName)
+        {
+            Console.Write("Save to file? ");
+            string input = Console.ReadLine()!;
+            if(input.ToLower() != "yes"  && input.ToLower() != "y")
+            {
+                return;
+            }
+            //klasa strumieniowa - pozwala na odczyt i zapis danych do pliku, pamięci itp. za pomocą strumieni bajtów. Umożliwia efektywne zarządzanie zasobami i operacjami we/wy.
+            //using - służy do automatycznego zwalniania zasobów, takich jak strumienie, po zakończeniu ich używania. Zapewnia, że metoda Dispose() zostanie wywołana na obiekcie, nawet jeśli wystąpi wyjątek, co pozwala na uniknięcie wycieków pamięci i innych problemów związanych z zarządzaniem zasobami.
+            using FileStream fileStream = new FileStream(Path.Combine(_filePath, fileName), FileMode.Create);
+
+            //strumienie domyślnie obsługują dane w postaci bajtów, dlatego musimy przekonwertować nasze dane tekstowe na bajty przed zapisaniem ich do strumienia. Możemy to zrobić za pomocą klasy Encoding, która umożliwia konwersję między różnymi formatami kodowania znaków a bajtami. W tym przypadku używamy kodowania UTF-8, które jest powszechnie stosowane do reprezentacji tekstu w formie bajtów.
+            /*var bytes = Encoding.UTF8.GetBytes(data);
+            fileStream.Write(bytes);*/
+
+            //klasa pomocnicza do zapisu danych tekstowych do strumienia. Umożliwia łatwe zapisywanie tekstu do pliku, pamięci itp. za pomocą strumieni bajtów. Zapewnia funkcje formatowania i kodowania tekstu, co ułatwia zarządzanie danymi tekstowymi w strumieniach.
+            using StreamWriter writer = new StreamWriter(fileStream);
+            writer.Write(data);
+
+            //flush - metoda, która wymusza zapisanie wszystkich danych z bufora do strumienia docelowego. Jest to ważne, ponieważ strumienie często używają buforowania, aby poprawić wydajność operacji we/wy. Wywołanie Flush() zapewnia, że wszystkie dane zostaną zapisane do pliku, nawet jeśli bufor nie jest pełny.
+            fileStream.Flush();
+
+            //jeśli nie używamy using, musimy ręcznie wywołać metodę Dispose() na obiekcie strumienia, aby zwolnić zasoby. Jeśli tego nie zrobimy, może dojść do wycieku pamięci i innych problemów związanych z zarządzaniem zasobami. Dlatego zaleca się korzystanie z using, aby zapewnić poprawne zarządzanie zasobami i uniknąć potencjalnych problemów.
+            //fileStream.Dispose();
+        }
 
         private void ToXml()
         {
@@ -63,11 +94,12 @@ namespace ItemsManager
 
             XmlSerializer serializer = new XmlSerializer(items.GetType());
 
-            MemoryStream memoryStream = new MemoryStream();
+            using MemoryStream memoryStream = new MemoryStream();
             serializer.Serialize(memoryStream, items);
 
             string xml = Encoding.UTF8.GetString(memoryStream.ToArray());
             Console.WriteLine(xml);
+            SaveToFile(xml, "items.xml");
 
         }
 
@@ -86,6 +118,7 @@ namespace ItemsManager
 
                string json = JsonSerializer.Serialize(items, options);
             Console.WriteLine(json);
+            SaveToFile(json, "items.json");
         }
 
         void Edit()
