@@ -14,6 +14,15 @@ namespace ItemsManager
         protected IEntityService service = new Services.InMemory.EntityService();
         private readonly string _filePath;
 
+        JsonSerializerOptions _options = new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseUpper,
+            IgnoreReadOnlyProperties = true,
+            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault,
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+        };
+
         protected EntityManager(string filePath)
         {
             _filePath = filePath;
@@ -28,7 +37,7 @@ namespace ItemsManager
                 Console.Clear();
                 Console.WriteLine( string.Join('\n', service.ReadAll().Select(x => x.ToString())) );
 
-                Console.WriteLine("Commands: create, edit, delete, json, xml, exit");
+                Console.WriteLine("Commands: create, edit, delete, json, xml, import, exit");
 
                 string input = Console.ReadLine()!;
 
@@ -49,6 +58,9 @@ namespace ItemsManager
                     case "xml":
                         ToXml();
                         break;
+                    case "import":
+                        Import();
+                        break;
                     case "exit":
                         exit = true;
                         break;
@@ -61,6 +73,44 @@ namespace ItemsManager
                 Console.ReadKey();
             }
         }
+
+        private void Import()
+        {
+            string fileName = ReadString("File name: ").Trim('"');
+            if(!File.Exists(fileName))
+            {
+                Console.WriteLine("File not found");
+                return;
+            }
+
+            /*using FileStream fileStream = new FileStream(fileName, FileMode.Open);
+            using StreamReader reader = new StreamReader(fileStream);
+            string data = reader.ReadToEnd();
+            Console.WriteLine(data);*/
+            List<T> items = null;
+            switch(Path.GetExtension(fileName))
+            {
+                case ".json":
+                    var data = File.ReadAllText(fileName);
+                    items = JsonSerializer.Deserialize<List<T>>(data, _options);
+                    
+                    break;
+                case ".xml":
+                    XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
+                    FileStream fileStream = new FileStream(fileName, FileMode.Open);
+                    items = (List<T>)serializer.Deserialize(fileStream)!;
+                    break;
+            }
+            if (items is null)
+                return;
+
+            foreach (var item in items)
+            {
+                service.Create(item);
+            }
+
+        }
+
         private void SaveToFile(string data, string fileName)
         {
             Console.Write("Save to file? ");
@@ -121,16 +171,9 @@ namespace ItemsManager
         {
             var items = service.ReadAll().Cast<T>();
 
-            JsonSerializerOptions options = new JsonSerializerOptions
-            {
-                WriteIndented = true,
-                PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseUpper,
-                IgnoreReadOnlyProperties = true,
-                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault,
-                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-            };
+            
 
-               string json = JsonSerializer.Serialize(items, options);
+               string json = JsonSerializer.Serialize(items, _options);
             Console.WriteLine(json);
             SaveToFile(json, "items.json");
         }
