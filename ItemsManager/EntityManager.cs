@@ -65,6 +65,20 @@ namespace ItemsManager
         {
             Console.Write("Save to file? ");
             string input = Console.ReadLine()!;
+            if (input.ToLower() != "yes" && input.ToLower() != "y")
+            {
+                return;
+            }
+            //File - fasada, która udostępnia proste metody do operacji na plikach, takich jak tworzenie, odczytywanie, zapisywanie i usuwanie plików.
+            //Umożliwia łatwe zarządzanie plikami bez konieczności bezpośredniego korzystania z klas strumieniowych.
+            File.WriteAllText(Path.Combine(_filePath, fileName), data);
+
+        }
+
+        private void SaveToFileUsingStream(string data, string fileName)
+        {
+            Console.Write("Save to file? ");
+            string input = Console.ReadLine()!;
             if(input.ToLower() != "yes"  && input.ToLower() != "y")
             {
                 return;
