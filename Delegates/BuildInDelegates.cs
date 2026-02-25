@@ -34,9 +34,18 @@ namespace Delegates
                 }
         }
 
+
+        //przykład z params string[] args, który jest parametrem tablicowym, pozwala na przekazanie dowolnej liczby argumentów typu string do metody Sth
+        public void Sth(params string[] args)
+        {
+            Action<string[]> action = Sth;
+        }
+
         public void Test()
         {
             Method(Add, SubstractAndCopare);
+
+            Sth("", "", "");
         }
     }
 }
