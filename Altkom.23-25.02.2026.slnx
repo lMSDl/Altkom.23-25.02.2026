@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="ConsoleApp/ConsoleApp.csproj" />
+  <Project Path="Delegates/Delegates.csproj" Id="90019925-4fd5-446a-a7ac-fd2a736fee29" />
   <Project Path="Inheritance/Inheritance.csproj" Id="1c998a22-dd26-430d-a715-f672e47b88b3" />
   <Project Path="ItemsManager/ItemsManager.csproj" Id="cbdff4b1-d576-47c4-8a6b-c583169784d0" />
   <Project Path="Models/Models.csproj" Id="8331dde4-b6aa-468d-8fb5-3807cd18fdda" />
