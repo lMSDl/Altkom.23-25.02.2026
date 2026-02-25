@@ -94,7 +94,8 @@ namespace ItemsManager
             {
                 case ".json":
                     var bytes = File.ReadAllBytes(fileName);
-                    var decryptedData = new SymmetricEncryption().Decrypt(bytes, "alamakota");
+                    //var decryptedData = new SymmetricEncryption().Decrypt(bytes, "alamakota");
+                    var decryptedData = new AsymmetricEncryption().Decrypt(bytes, "CN=localhost");
                     
 
                     items = JsonSerializer.Deserialize<List<T>>(decryptedData, _options);
@@ -128,7 +129,8 @@ namespace ItemsManager
             //Umożliwia łatwe zarządzanie plikami bez konieczności bezpośredniego korzystania z klas strumieniowych.
             //File.WriteAllText(Path.Combine(_filePath, fileName), data);
 
-            var encryptedData = new SymmetricEncryption().Encrypt(data, "alamakota");
+            //var encryptedData = new SymmetricEncryption().Encrypt(data, "alamakota");
+            var encryptedData = new AsymmetricEncryption().Encrypt(data, "CN=localhost");
             File.WriteAllBytes(Path.Combine(_filePath, fileName), encryptedData);
         }
 
