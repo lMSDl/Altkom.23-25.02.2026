@@ -14,16 +14,8 @@ namespace Services.InMemory
 
         public void Create(Entity entity)
         {
-            int maxId = 0;
-            foreach (var product in _entities)
-            {
-                if (product.Id > maxId)
-                {
-                    maxId = product.Id;
-                }
-            }
-
-            entity.Id = maxId + 1;
+            //DefaultIfEmpty - jeśli kolekcja jest pusta, to zwróć kolekcję z jednym elementem o wartości 0, a następnie weź maksymalną wartość i dodaj 1, aby uzyskać nowy unikalny identyfikator.
+            entity.Id = _entities.Select(x => x.Id).DefaultIfEmpty(0).Max() + 1;
             _entities.Add(entity);
         }
 
@@ -41,22 +33,13 @@ namespace Services.InMemory
 
         public Entity? Read(int id)
         {
-            Entity? result = null;
-            foreach (var entity in _entities)
-            {
-                if (entity.Id == id)
-                {
-                    result = entity;
-                    break;
-                }
-            }
-
+            Entity? result = _entities.SingleOrDefault(x => x.Id == id);
             return result;
         }
 
         public IEnumerable<Entity> ReadAll()
         {
-            return [.. _entities];
+            return _entities.ToList();
         }
 
         public bool Update(int id, Entity entity)

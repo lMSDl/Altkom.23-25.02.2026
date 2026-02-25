@@ -17,10 +17,7 @@ namespace ItemsManager
             while (!exit)
             {
                 Console.Clear();
-                foreach (var entity in service.ReadAll())
-                {
-                    Console.WriteLine(entity);
-                }
+                Console.WriteLine( string.Join('\n', service.ReadAll().Select(x => x.ToString())) );
 
                 Console.WriteLine("Commands: create, edit, delete, exit");
 
@@ -190,10 +187,10 @@ namespace ItemsManager
         }
 
 
-        int ReadInt(string label)
+        public static int ReadInt(string label, int @default = 0)
         {
             int value = 4;
-            if (!TryReadInt(label, out value))
+            if (!TryReadInt(label, out value, @default))
             {
                 ReadInt(label);
             }
@@ -202,10 +199,16 @@ namespace ItemsManager
 
 
         //worzymy własną metodę zgodnie z Try Pattern - metoda, która próbuje wykonać jakąś operację i zwraca boola informującego o sukcesie oraz wynik tej operacji przez parametr out
-        bool TryReadInt(string label, out int result)
+        public static bool TryReadInt(string label, out int result, int @default = 0)
         {
             Console.Write(label);
             string input = Console.ReadLine()!;
+
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                result = @default;
+                return true;
+            }
 
             try
             {

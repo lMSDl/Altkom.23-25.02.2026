@@ -92,7 +92,10 @@ namespace Delegates
 
             Console.ReadLine();
 
-            
+            var query = strings.Where(x => x.Length > 2);
+            if(DateTime.Now.Second % 2 == 0)
+                query = query.Where(x => x.Length < 5);
+            string[] result9 = query.ToArray();
 
 
         }

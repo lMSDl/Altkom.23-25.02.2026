@@ -17,6 +17,13 @@ foreach (var playable in playables)
 }*/
 
 
-EntityManager<ToDo> manager = new ToDoManager();
+//EntityManager<ToDo> manager = new ToDoManager();
+EntityManager<Pet> manager = new DelegateManager<Pet>(
+    () => new Pet(),
+    pet => pet.Age = EntityManager<Pet>.ReadInt("Age: "),
+    (current, edited) => edited.Age = EntityManager<Pet>.ReadInt($"Age ({current.Age}): ", current.Age)
+    );
+
+
 
 manager.Run();
